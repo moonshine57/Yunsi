@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>云思</title>
+</head>
+
+<body>
+    <form action="result/" method="post">
+        <!-- Django post方法传递数据需要令牌，否则报错  -->
+        {% csrf_token %} title：
+        <input type="text" name="title">
+        <br> content:
+        <textarea name="content" id="" cols="30" rows="10"></textarea>
+        <button type="submit">提交</button>
+    </form>
+</body>
+
+</html>
