@@ -12,7 +12,8 @@
 </head>
 
 <body>
-    <img src="wcloud\\images\\80f6ea8782b245adb1558a74e10adfff.png" alt="图片" width="304" height="228">
+    {% load static %}
+    <img src = "{% static "wcloud/test.png" %}" alt="图片" width="304" height="228">
     <a href="download/?imgname={{imgname}}" +>下载</a>
 </body>
 
