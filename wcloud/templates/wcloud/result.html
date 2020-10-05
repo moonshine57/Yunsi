@@ -11,21 +11,88 @@
     </style>
 </head>
 
+
 <body>
     {% load static %}
-    <img src = "{% static imgname %}" alt="图片" width="304" height="228">
+    <img src="{% static imgname %}" alt="图片" width="304" height="228">
     <a href="download/?imgname={{imgname}}" +>下载</a>
-    <table>
-        <tr>
-            <th>词语</th>
-            <th>出现频次</th>
-        </tr>
-    {% for wf in word_frequency %}
-    <tr>
-        <th>{{wf.0}}</th>
-        <th>{{wf.1}}</th>
-    </tr>
-    {% endfor %}
+    <div style="height:400px;width:300px;overflow:auto;background:#EEEEEE;">
+        <table>
+            <tr>
+                <th>词语</th>
+                <th>出现频次</th>
+            </tr>
+            {% for wf in word_frequency %}
+            <tr>
+                <td>{{wf.0}}</td>
+                <td>{{wf.1}}</td>
+                <td>
+                    <input type="button" value="删除" onClick="removeRow(this)" />
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <button>下载词表</button>
+    <script type="text/javascript">
+        function removeRow(inputobj) {
+            console.log(inputobj.value);
+            if (inputobj == null) return;
+            var parentTD = inputobj.parentNode;
+            var parentTR = parentTD.parentNode;
+            var parentTBODY = parentTR.parentNode;
+            parentTBODY.removeChild(parentTR);
+        }
 
+        function download_csv(csv, filename) {
+            var csvFile;
+            var downloadLink;
+
+            // CSV FILE
+            csvFile = new Blob([csv], { type: "text/csv" });
+
+            // Download link
+            downloadLink = document.createElement("a");
+
+            // File name
+            downloadLink.download = filename;
+
+            // We have to create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Make sure that the link is not displayed
+            downloadLink.style.display = "none";
+
+            // Add the link to your DOM
+            document.body.appendChild(downloadLink);
+
+            // Lanzamos
+            downloadLink.click();
+        }
+
+        function export_table_to_csv(html, filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++)
+                    row.push(cols[j].innerText);
+
+                csv.push(row.join(","));
+            }
+
+            // Download CSV
+            download_csv(csv.join("\n"), filename);
+        }
+
+        document.querySelector("button").addEventListener("click", function () {
+            var html = document.querySelector("table").outerHTML;
+            export_table_to_csv(html, "table.csv");
+        });
+
+    </script>
 </body>
+
 </html>
