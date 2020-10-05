@@ -15,5 +15,17 @@
     {% load static %}
     <img src = "{% static imgname %}" alt="图片" width="304" height="228">
     <a href="download/?imgname={{imgname}}" +>下载</a>
+    <table>
+        <tr>
+            <th>词语</th>
+            <th>出现频次</th>
+        </tr>
+    {% for wf in word_frequency %}
+    <tr>
+        <th>{{wf.0}}</th>
+        <th>{{wf.1}}</th>
+    </tr>
+    {% endfor %}
+
 </body>
 </html>

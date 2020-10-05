@@ -22,9 +22,9 @@ def result(request):
     wordcloud.to_file('./wcloud/images/'+filename)
     '''
     imgname = uuid.uuid4().hex+'.png'
-    generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path)
+    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path)
     template = loader.get_template('wcloud/result.html')
-    return HttpResponse(template.render({"imgname":imgname}, request))
+    return HttpResponse(template.render({"imgname":imgname,"word_frequency":word_frequency}, request))
 
 def download(request):
     imgname = request.GET.get('imgname')

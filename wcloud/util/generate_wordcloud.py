@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import jieba
 from wordcloud import WordCloud, ImageColorGenerator
 import uuid
+from collections import Counter
 
-def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,isCN=True,my_words_list=[],color_by_backimg=False):
+def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,my_words_list=[],color_by_backimg=False):
 
     '''
     back_coloring_path = "../res/cloud.jpg" # 设置背景图片路径
@@ -29,8 +30,11 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
                 )
 
     add_word(my_words_list)
-    if isCN:
-        text = jiebaclearText(text,stopwords_path)
+    word_list = jiebaclearText(text,stopwords_path)
+    text = ''.join(word_list)
+    word_frequency = Counter(word_list).most_common(120)
+
+
 
     # 生成词云, 可以用generate输入全部文本(wordcloud对中文分词支持不好,建议启用中文分词),也可以我们计算好词频后使用generate_from_frequencies函数
     wc.generate(text)
@@ -49,6 +53,8 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
         wc.recolor(color_func=image_colors)
         # 保存图片
         wc.to_file('..\\images\\'+imgname)
+    
+    return word_frequency
 
 # 添加自己的词库分词
 def add_word(list):
@@ -68,4 +74,4 @@ def jiebaclearText(text,stopwords_path):
     for myword in liststr.split('/'):
         if not(myword.strip() in f_stop_seg_list) and len(myword.strip())>1:
             mywordlist.append(myword)
-    return ''.join(mywordlist)
+    return mywordlist
