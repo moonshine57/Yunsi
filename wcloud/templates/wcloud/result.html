@@ -34,6 +34,7 @@
         </table>
     </div>
     <button>下载词表</button>
+    <button type="button" id="send-word-frequency-to-views">按词表重绘</button>
     <script type="text/javascript">
         function removeRow(inputobj) {
             console.log(inputobj.value);
@@ -92,6 +93,26 @@
             export_table_to_csv(html, "table.csv");
         });
 
+        $(document).ready(function () {
+            var word_frequency = '快乐 3';
+            $("#send-word-frequency-to-views").click(function () {
+                $.ajax({
+                    url: "regenerate",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        word_frequency: word_frequency,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (json) {
+                        alert("Successfully sent the URL to Django");
+                    },
+                    error: function (xhr, errmsg, err) {
+                        alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

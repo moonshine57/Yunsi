@@ -35,3 +35,9 @@ def download(request):
     response['Content-Disposition'] = 'attachment;filename="wordcloud.png"' 
     return response
 
+def regenerate(request):
+    print('aaaaaaaaaaaaaaa')
+    word_frequency = request.POST.get('word_frequency')
+    print('ccccccccccc')
+    print(word_frequency)
+
