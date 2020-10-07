@@ -34,7 +34,8 @@
         </table>
     </div>
     <button>下载词表</button>
-    <button type="button" id="send-word-frequency-to-views">按词表重绘</button>
+    <button id="send-word-frequency-to-views">按词表重绘</button>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
     <script type="text/javascript">
         function removeRow(inputobj) {
             console.log(inputobj.value);
@@ -92,12 +93,13 @@
             var html = document.querySelector("table").outerHTML;
             export_table_to_csv(html, "table.csv");
         });
-
+   
         $(document).ready(function () {
             var word_frequency = '快乐 3';
             $("#send-word-frequency-to-views").click(function () {
+                alert("Successfully sent the URL to Django");
                 $.ajax({
-                    url: "regenerate",
+                    url: "regenerate/",
                     type: "POST",
                     dataType: "json",
                     data: {
