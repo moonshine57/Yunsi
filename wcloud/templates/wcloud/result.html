@@ -117,8 +117,12 @@
                     },
                     success: function (json) {
                         var img = document.getElementById('img');
-                        img.src = "{% static '微思词云.png' %}";
-
+                        var new_imgname = json['imgname'];
+                        alert(new_imgname);
+                        var src= "{% static 'placeholder'%}"
+                        alert(src);
+                        src = src.replace('placeholder',new_imgname);
+                        img.src = src;
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);

@@ -37,7 +37,7 @@ def download(request):
 
 def regenerate(request):
     word_frequency = request.POST.get('word_frequency')
-    print(word_frequency)
-    return JsonResponse({"msg": "ok"})
+    imgname = "f5489e52b3074e4f8539540552b44690.png"
+    return JsonResponse({"imgname": imgname})
 
 
