@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.template import loader
 import io
 import uuid
@@ -36,8 +36,6 @@ def download(request):
     return response
 
 def regenerate(request):
-    print('aaaaaaaaaaaaaaa')
-    word_frequency = request.POST.get('word_frequency')
-    print('ccccccccccc')
-    print(word_frequency)
+    return JsonResponse({"msg": "ok"})
+
 

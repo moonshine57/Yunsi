@@ -14,7 +14,7 @@
 
 <body>
     {% load static %}
-    <img src="{% static imgname %}" alt="图片" width="304" height="228">
+    <img id='img'src="{% static imgname %}" alt="图片" width="304" height="228">
     <a href="download/?imgname={{imgname}}" +>下载</a>
     <div style="height:400px;width:300px;overflow:auto;background:#EEEEEE;">
         <table>
@@ -97,7 +97,6 @@
         $(document).ready(function () {
             var word_frequency = '快乐 3';
             $("#send-word-frequency-to-views").click(function () {
-                alert("Successfully sent the URL to Django");
                 $.ajax({
                     url: "regenerate/",
                     type: "POST",
@@ -107,7 +106,9 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (json) {
-                        alert("Successfully sent the URL to Django");
+                        var img = document.getElementById('img');
+                        img.src = "{% static '微思词云.png' %}";
+
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);
