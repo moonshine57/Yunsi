@@ -36,6 +36,8 @@ def download(request):
     return response
 
 def regenerate(request):
+    word_frequency = request.POST.get('word_frequency')
+    print(word_frequency)
     return JsonResponse({"msg": "ok"})
 
 
