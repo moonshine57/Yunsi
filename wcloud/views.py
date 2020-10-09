@@ -2,6 +2,7 @@ from django.http import HttpResponse,JsonResponse
 from django.template import loader
 import io
 import uuid
+import json
 
 from wcloud.util.generate_wordcloud import generate_wordcloud
 
@@ -37,7 +38,15 @@ def download(request):
 
 def regenerate(request):
     word_frequency = request.POST.get('word_frequency')
-    imgname = "f5489e52b3074e4f8539540552b44690.png"
+    word_frequency = json.loads(word_frequency)
+    word_frequency.pop(0)
+    d = {}
+    for item in word_frequency:
+        item = item.split(',')[:2]
+        d[item[0]] = int(item[1])
+    imgname = uuid.uuid4().hex+'.png'
+    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path)
+
     return JsonResponse({"imgname": imgname})
 
 

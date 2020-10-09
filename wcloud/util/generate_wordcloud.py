@@ -29,15 +29,16 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
                 collocations=False,
                 )
 
-    add_word(my_words_list)
-    word_list = jiebaclearText(text,stopwords_path)
-    text = ''.join(word_list)
-    word_frequency = Counter(word_list).most_common(120)
-
-
-
     # 生成词云, 可以用generate输入全部文本(wordcloud对中文分词支持不好,建议启用中文分词),也可以我们计算好词频后使用generate_from_frequencies函数
-    wc.generate(text)
+    if type(text) == str:
+        add_word(my_words_list)
+        word_list = jiebaclearText(text,stopwords_path)
+        text = ''.join(word_list)
+        word_frequency = Counter(word_list).most_common(120)
+        wc.generate(text)
+    else:
+        wc.generate_from_frequencies(text)
+        word_frequency = text
     # wc.generate_from_frequencies(txt_freq)
     # txt_freq例子为[('词a', 100),('词b', 90),('词c', 80)]
     
