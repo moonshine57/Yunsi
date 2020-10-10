@@ -16,7 +16,7 @@
     {% load static %}
     <img id='img' src="{% static imgname %}" alt="图片" width="304" height="228">
     <a href="download/?imgname={{imgname}}" +>下载</a>
-    <div style="height:400px;width:300px;overflow:auto;background:#EEEEEE;">
+    <div style="height:400px;width:600px;overflow:auto;background:#EEEEEE;">
         <table>
             <tr>
                 <th>词语</th>
@@ -24,8 +24,12 @@
             </tr>
             {% for wf in word_frequency %}
             <tr>
-                <td><input value='{{wf.0}}' /></td>
-                <td><input value='{{wf.1}}' /></td>
+                <td>
+                    <input value="{{wf.0}}" />
+                </td>
+                <td>
+                    <input value="{{wf.1}}" />
+                </td>
                 <td>
                     <input type="button" value="删除" onClick="removeRow(this)" />
                 </td>
@@ -33,7 +37,8 @@
             {% endfor %}
         </table>
     </div>
-    <button>下载词表</button>
+
+    <button id="download">下载词表</button>
     <button id="send-word-frequency-to-views">按词表重绘</button>
     <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
     <script type="text/javascript">
@@ -74,12 +79,13 @@
         function export_table_to_csv(html, filename) {
             var csv = [];
             var rows = document.querySelectorAll("table tr");
-
             for (var i = 0; i < rows.length; i++) {
                 var row = [], cols = rows[i].querySelectorAll("td, th");
 
-                for (var j = 0; j < 2; j++)
-                    row.push(cols[j].childNodes[0].value);
+                for (var j = 0; j < 2; j++) {
+                    var inputHtml = cols[j].innerHTML;
+                    row.push(inputHtml.substring(inputHtml.indexOf('"') + 1, inputHtml.indexOf('>') - 1));
+                }
 
                 csv.push(row.join(","));
             }
@@ -88,7 +94,7 @@
             download_csv(csv.join("\n"), filename);
         }
 
-        document.querySelector("button").addEventListener("click", function () {
+        document.getElementById('download').addEventListener("click", function () {
             var html = document.querySelector("table").outerHTML;
             export_table_to_csv(html, "table.csv");
         });
@@ -101,8 +107,11 @@
                 for (var i = 0; i < rows.length; i++) {
                     var row = [], cols = rows[i].querySelectorAll("td, th");
 
-                    for (var j = 0; j < 2; j++)
-                        row.push(cols[j].childNodes[0].value);
+                    for (var j = 0; j < 2; j++) {
+                        var inputHtml = cols[j].innerHTML;
+                        row.push(inputHtml.substring(inputHtml.indexOf('"') + 1, inputHtml.indexOf('>') - 1));
+                    }
+
 
                     csv.push(row.join(","));
                 }
