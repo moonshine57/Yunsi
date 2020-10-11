@@ -15,9 +15,9 @@
 <body>
     {% load static %}
     <img id='img' src="{% static imgname %}" alt="图片" width="304" height="228">
-    <a href="download/?imgname={{imgname}}" +>下载</a>
+    <a id='downloadPic' href="download/?imgname={{imgname}}" +>下载</a>
     <div style="height:400px;width:300px;overflow:auto;background:#EEEEEE;">
-        <table>
+        <table id='Tbl'>
             <tr>
                 <th>词语</th>
                 <th>出现频次</th>
@@ -34,6 +34,7 @@
         </table>
     </div>
     <button>下载词表</button>
+    <button onclick="addRow()">新增词语</button>
     <button id="send-word-frequency-to-views">按词表重绘</button>
     <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
     <script type="text/javascript">
@@ -44,6 +45,24 @@
             var parentTBODY = parentTR.parentNode;
             parentTBODY.removeChild(parentTR);
         }
+
+        
+        function addRow() {
+
+            //添加行
+            var newTr = Tbl.insertRow(1);
+
+            //添加列
+            var newTd0 = newTr.insertCell();
+            var newTd1 = newTr.insertCell();
+            var newTd2 = newTr.insertCell();
+
+            //设置列内容和属性
+            newTd0.innerHTML = "<td><input value='' /></td>";
+            newTd1.innerHTML = "<td><input value='' /></td>";
+            newTd2.innerHTML = '<input type="button" value="删除" onClick="removeRow(this)" />';
+        }
+
 
         function download_csv(csv, filename) {
             var csvFile;
@@ -115,13 +134,17 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (json) {
+
                         var img = document.getElementById('img');
                         var new_imgname = json['imgname'];
-                        alert(new_imgname);
                         var src = "{% static 'placeholder'%}"
-                        alert(src);
                         src = src.replace('placeholder', new_imgname);
                         img.src = src;
+
+                        var download_link = document.getElementById('downloadPic');
+                        var href = "download/?imgname=placeholder";
+                        href = href.replace('placeholder',new_imgname);
+                        download_link.href = href;
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);

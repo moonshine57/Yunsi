@@ -38,7 +38,6 @@ def download(request):
 
 def regenerate(request):
     word_frequency = request.POST.get('word_frequency')
-    print(word_frequency)
     word_frequency = json.loads(word_frequency)
     word_frequency.pop(0)
     d = {}
