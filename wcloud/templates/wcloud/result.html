@@ -7,6 +7,7 @@
     <style>
         body {
             background-color: #d9e9ca;
+            text-align: center;
         }
     </style>
 </head>
@@ -14,9 +15,10 @@
 
 <body>
     {% load static %}
-    <img id='img' src="{% static imgname %}" alt="图片" width="304" height="228">
-    <a id='downloadPic' href="download/?imgname={{imgname}}" +>下载</a>
-    <div style="height:400px;width:300px;overflow:auto;background:#EEEEEE;">
+    <div>
+    <img style="display:inline-block;vertical-align:top;" id='img' src="{% static imgname %}" alt="图片" width="600" height="600">
+    <div style="display:inline-block;vertical-align:top;">
+    <div style="height:600px;width:450px;overflow:auto;background:#EEEEEE;margin: auto;">
         <table id='Tbl'>
             <tr>
                 <th>词语</th>
@@ -32,10 +34,16 @@
             </tr>
             {% endfor %}
         </table>
+        </div>
+
     </div>
-    <button>下载词表</button>
+    </div>
+    <div style="margin-top:10px">
+    <button id='downloadPic' onclick="javascript:window.location.href='download/?imgname={{imgname}}'">下载图片</button>
+    <button id='downloadCsv'>下载词表</button>
     <button onclick="addRow()">新增词语</button>
     <button id="send-word-frequency-to-views">按词表重绘</button>
+    </div>
     <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
     <script type="text/javascript">
         function removeRow(inputobj) {
@@ -107,7 +115,7 @@
             download_csv(csv.join("\n"), filename);
         }
 
-        document.querySelector("button").addEventListener("click", function () {
+        document.getElementById('downloadCsv').addEventListener("click", function () {
             var html = document.querySelector("table").outerHTML;
             export_table_to_csv(html, "table.csv");
         });
@@ -141,10 +149,12 @@
                         src = src.replace('placeholder', new_imgname);
                         img.src = src;
 
-                        var download_link = document.getElementById('downloadPic');
-                        var href = "download/?imgname=placeholder";
-                        href = href.replace('placeholder',new_imgname);
-                        download_link.href = href;
+                        var downloadPicButton = document.getElementById('downloadPic');
+                        var onclick = "javascript:window.location.href='download/?imgname=placeholder'";
+                        onclick = onclick.replace('placeholder',new_imgname);
+                        downloadPicButton.setAttribute("onclick",onclick);
+                        alert(onclick);
+                        alert(downloadPicButton.onclick);
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);

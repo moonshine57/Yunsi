@@ -20,10 +20,10 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
     # 设置词云属性
     wc = WordCloud(font_path=font_path,  # 设置字体
                 background_color="white",  # 背景颜色
-                max_words=120,  # 词云显示的最大词数
+                max_words=75,  # 词云显示的最大词数
                 mask=back_coloring,  # 设置背景图片
-                max_font_size=300,  # 字体最大值
-                min_font_size=20,
+                max_font_size=200,  # 字体最大值
+                min_font_size=4,
                 random_state=42,
                 width=1000, height=860, margin=2,# 设置图片默认的大小,但是如果使用背景图片的话,那么保存的图片大小将会按照其大小保存,margin为词语边缘距离
                 collocations=False,
@@ -34,7 +34,7 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
         add_word(my_words_list)
         word_list = jiebaclearText(text,stopwords_path)
         text = ''.join(word_list)
-        word_frequency = Counter(word_list).most_common(120)
+        word_frequency = Counter(word_list).most_common(150)
         wc.generate(text)
     else:
         wc.generate_from_frequencies(text)
@@ -45,15 +45,12 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
     if not color_by_backimg:
         # 保存图片
         wc.to_file('wcloud\\images\\'+imgname)
-        print(imgname)
-        print('保存成功')
-
     else:
         # 从背景图片生成颜色值
         image_colors = ImageColorGenerator(back_coloring)
         wc.recolor(color_func=image_colors)
         # 保存图片
-        wc.to_file('..\\images\\'+imgname)
+        wc.to_file('wcloud\\images\\'+imgname)
     
     return word_frequency
 

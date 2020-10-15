@@ -8,7 +8,7 @@ from wcloud.util.generate_wordcloud import generate_wordcloud
 
 from wordcloud import WordCloud
 
-back_coloring_path = "wcloud\\res\\cloud.jpg" # 设置背景图片路径
+back_coloring_path = "wcloud\\res\\2.png" # 设置背景图片路径
 font_path = 'wcloud\\res\\simkai.ttf' # 为matplotlib设置中文字体路径没
 stopwords_path = 'wcloud\\res\\hit_stopwords.txt' # 停用词词表
 
@@ -23,7 +23,7 @@ def result(request):
     wordcloud.to_file('./wcloud/images/'+filename)
     '''
     imgname = uuid.uuid4().hex+'.png'
-    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path)
+    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=True)
     template = loader.get_template('wcloud/result.html')
     return HttpResponse(template.render({"imgname":imgname,"word_frequency":word_frequency}, request))
 
@@ -45,7 +45,7 @@ def regenerate(request):
         item = item.split(',')[:2]
         d[item[0]] = int(item[1])
     imgname = uuid.uuid4().hex+'.png'
-    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path)
+    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=True)
 
     return JsonResponse({"imgname": imgname})
 
