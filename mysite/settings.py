@@ -123,4 +123,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     "static",
     'D:\\myFiles\\wordcloud_site\\Yunsi\\wcloud\\images',
+    'D:\\myFiles\\wordcloud_site\\Yunsi\\wcloud\\js',
+    'D:\\myFiles\\wordcloud_site\\Yunsi\\wcloud\\css',
+    'D:\\myFiles\\wordcloud_site\\Yunsi\\wcloud\\res\\shape',
 ]

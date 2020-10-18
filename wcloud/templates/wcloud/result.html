@@ -10,9 +10,12 @@
             text-align: center;
         }
     </style>
+     {% load static %}
+ <!--   <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-responsive.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'examples.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'image-picker.css' %}">
 </head>
-
-
 <body>
     {% load static %}
     <div>
@@ -42,9 +45,60 @@
     <button id='downloadPic' onclick="javascript:window.location.href='download/?imgname={{imgname}}'">下载图片</button>
     <button id='downloadCsv'>下载词表</button>
     <button onclick="addRow()">新增词语</button>
-    <button id="send-word-frequency-to-views">按词表重绘</button>
+    <button id="send-word-frequency-to-views">重绘</button>
+    <button onclick="getSelectedShape()">按所选背景图重绘</button>
     </div>
-    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <div id="container">
+	<div class="picker">
+		<select class='image-picker' id='sel'>
+			<option data-img-src="{% static '1s.png' %}" value='1.png'>  Page 1  </option>
+            <option data-img-src="{% static '2s.png' %}" value='2.png'>  Page 2  </option>
+            <option data-img-src="{% static '1.jpg' %}" value='3'>  Page 3  </option>
+            <option data-img-src="{% static '2.jpg' %}" value='4'>  Page 4  </option>
+            <option data-img-src="{% static '1.jpg' %}" value='5'>  Page 5  </option>
+            <option data-img-src="{% static '2.jpg' %}" value='6'>  Page 6  </option>
+            <option data-img-src="{% static '1.jpg' %}" value='7'>  Page 7  </option>
+            <option data-img-src="{% static '2.jpg' %}" value='8'>  Page 8  </option>
+            <option data-img-src="{% static '1.jpg' %}" value='9'>  Page 9  </option>
+            <option data-img-src="{% static '2.jpg' %}" value='10'>  Page 10  </option>
+            <option data-img-src="{% static '1.jpg' %}" value='11'>  Page 11  </option>
+			<option data-img-src="{% static '2.jpg' %}" value='12'>  Page 12  </option>
+		</select>
+    </div>
+</div>
+
+    <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'jquery.masonry.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'image-picker.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        
+            $("select.image-picker").imagepicker({
+                hide_select:false
+            });
+            
+            $("select.image-picker.show-labels").imagepicker({
+                hide_select:false, 
+                show_label:true
+            });
+            
+            $("select.image-picker.limit_callback").imagepicker({
+                limit_reached:function(){
+                    alert('We are full!')
+                },hide_select:false
+            });
+            
+            //瀑布流布局
+            var container = $("select.image-picker.masonry").next("ul.thumbnails");
+            
+            container.imagesLoaded(function(){ 
+                container.masonry({ 
+                    itemSelector:"li"
+                }); 
+            });
+            
+        });
+        </script>
     <script type="text/javascript">
         function removeRow(inputobj) {
             if (inputobj == null) return;
@@ -133,12 +187,16 @@
 
                     csv.push(row.join(","));
                 }
+                var myselect = document.getElementById('sel');
+                var index=myselect.selectedIndex ;  
+                var shapeName = myselect.options[index].value;
                 $.ajax({
                     url: "regenerate/",
                     type: "POST",
                     dataType: "json",
                     data: {
                         word_frequency: JSON.stringify(csv),
+                        shapeName:shapeName,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (json) {
@@ -153,8 +211,6 @@
                         var onclick = "javascript:window.location.href='download/?imgname=placeholder'";
                         onclick = onclick.replace('placeholder',new_imgname);
                         downloadPicButton.setAttribute("onclick",onclick);
-                        alert(onclick);
-                        alert(downloadPicButton.onclick);
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);
