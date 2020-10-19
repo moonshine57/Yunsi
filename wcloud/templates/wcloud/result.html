@@ -9,6 +9,14 @@
             background-color: #d9e9ca;
             text-align: center;
         }
+
+	.mylist li {
+		width: 280px;   /*如果显示三列 则width改为70px*/
+		float: left;
+        display: block;
+    }
+
+        
     </style>
      {% load static %}
  <!--   <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
@@ -48,7 +56,8 @@
     <button id="send-word-frequency-to-views">重绘</button>
     <button onclick="getSelectedShape()">按所选背景图重绘</button>
     </div>
-    <div id="container">
+    <div>
+    <div style="height:600px;width:600px;overflow:auto;margin:auto;display:inline-block;vertical-align:top">
 	<div class="picker">
 		<select class='image-picker' id='sel'>
 			<option data-img-src="{% static '1s.png' %}" value='1.png'>  Page 1  </option>
@@ -76,6 +85,15 @@
             <option data-img-src="{% static '23s.jpg' %}" value='23.png'>  Page 11  </option>
 			<option data-img-src="{% static '24s.png' %}" value='24.png'>  Page 12  </option>
 		</select>
+    </div>
+    </div>
+    <div class="mylist" style="height:600px;width:600px;overflow:auto;margin:auto;display:inline-block;vertical-align:top">
+    <ul>
+       <li><label>文字颜色</label></li>
+        <li><input id='wordcolor' type="color" value="#00bfff"/></li>
+       <li><label >背景颜色</label></li>
+       <li><input id='bgcolor' type="color" value="#FFFFFF"/></li>
+    </ul>
     </div>
 </div>
 
@@ -186,6 +204,7 @@
             export_table_to_csv(html, "table.csv");
         });
 
+
         $(document).ready(function () {
             $("#send-word-frequency-to-views").click(function () {
                 var csv = [];
@@ -202,6 +221,8 @@
                 var myselect = document.getElementById('sel');
                 var index=myselect.selectedIndex ;  
                 var shapeName = myselect.options[index].value;
+                var wordColor = document.getElementById('wordcolor').value;
+                var bgColor = document.getElementById('bgcolor').value;
                 $.ajax({
                     url: "regenerate/",
                     type: "POST",
@@ -209,6 +230,8 @@
                     data: {
                         word_frequency: JSON.stringify(csv),
                         shapeName:shapeName,
+                        wordColor:wordColor,
+                        bgColor:bgColor,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (json) {

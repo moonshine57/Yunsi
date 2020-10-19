@@ -24,7 +24,7 @@ def result(request):
     '''
     imgname = uuid.uuid4().hex+'.png'
     back_coloring_path = back_coloring_path_prefix + '16.png'
-    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=True)
+    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False)
     template = loader.get_template('wcloud/result.html')
     return HttpResponse(template.render({"imgname":imgname,"word_frequency":word_frequency}, request))
 
@@ -39,6 +39,10 @@ def download(request):
 
 def regenerate(request):
     shape_name = request.POST.get('shapeName')
+    word_color = request.POST.get('wordColor')
+    bg_color = request.POST.get('bgColor')
+    print(word_color)
+    print(bg_color)
     back_coloring_path = back_coloring_path_prefix+shape_name
     word_frequency = request.POST.get('word_frequency')
     word_frequency = json.loads(word_frequency)
@@ -48,7 +52,7 @@ def regenerate(request):
         item = item.split(',')[:2]
         d[item[0]] = int(item[1])
     imgname = uuid.uuid4().hex+'.png'
-    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=True)
+    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False,word_color=word_color,bg_color=bg_color)
 
     return JsonResponse({"imgname": imgname})
 
