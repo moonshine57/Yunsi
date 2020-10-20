@@ -54,7 +54,6 @@
     <button id='downloadCsv'>下载词表</button>
     <button onclick="addRow()">新增词语</button>
     <button id="send-word-frequency-to-views">重绘</button>
-    <button onclick="getSelectedShape()">按所选背景图重绘</button>
     </div>
     <div>
     <div style="height:600px;width:600px;overflow:auto;margin:auto;display:inline-block;vertical-align:top">
@@ -93,6 +92,35 @@
         <li><input id='wordcolor' type="color" value="#00bfff"/></li>
        <li><label >背景颜色</label></li>
        <li><input id='bgcolor' type="color" value="#FFFFFF"/></li>
+       <li><label >文字字体</label></li>
+       <li>
+            <select id='font'>
+                 <option value='weiruanyahei.ttf'>微软雅黑</option>
+                 <option value='huawensongti.ttf' selected>宋体</option>
+                 <option value='fangsong.ttf'>仿宋</option>
+                 <option value='simkai.ttf'>楷体</option>
+                 <option value='youyuan.ttf'>幼圆</option>
+                 <option value='lishu.ttf'>隶书</option>
+                 <option value='simhei.ttf'>黑体</option>
+            </select>
+        </li>
+       <li><label >文字旋转</label></li>
+       <li>
+           <select id='rotate'>
+                <option value='0.9'>水平和竖直</option>
+                <option value='1'>不旋转</option>
+           </select>
+       </li>
+       <li><label >输出词数</label></li>
+       <li>
+            <select id='wordnum'>
+                 <option value='50'>前50词</option>
+                 <option value='75' selected>前75词</option>
+                 <option value='100'>前100词</option>
+                 <option value='150'>前150词</option>
+            </select>
+        </li>
+
     </ul>
     </div>
 </div>
@@ -221,6 +249,19 @@
                 var myselect = document.getElementById('sel');
                 var index=myselect.selectedIndex ;  
                 var shapeName = myselect.options[index].value;
+
+                var rotate_select = document.getElementById('rotate');
+                var rotate_index=rotate_select.selectedIndex ;  
+                var rotate = rotate_select.options[rotate_index].value;
+
+                var wordnum_select = document.getElementById('wordnum');
+                var wordnum_index=wordnum_select.selectedIndex ;  
+                var wordnum = wordnum_select.options[wordnum_index].value;
+
+                var font_select = document.getElementById('font');
+                var font_index=font_select.selectedIndex ;  
+                var font = font_select.options[font_index].value;
+
                 var wordColor = document.getElementById('wordcolor').value;
                 var bgColor = document.getElementById('bgcolor').value;
                 $.ajax({
@@ -232,6 +273,9 @@
                         shapeName:shapeName,
                         wordColor:wordColor,
                         bgColor:bgColor,
+                        rotate:rotate,
+                        wordnum:wordnum,
+                        font:font,
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (json) {

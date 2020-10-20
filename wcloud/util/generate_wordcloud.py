@@ -8,7 +8,7 @@ from collections import Counter
 import numpy as np
 from wordcloud import get_single_color_func
 
-def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,my_words_list=[],color_by_backimg=False,word_color="#00bfff",bg_color="#FFFFFF"):
+def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,my_words_list=[],color_by_backimg=False,word_color="#00bfff",bg_color="#FFFFFF",rotate=0.9,wordnum=75):
 
     '''
     back_coloring_path = "../res/cloud.jpg" # 设置背景图片路径
@@ -24,13 +24,14 @@ def generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,
     # 设置词云属性
     wc = WordCloud(font_path=font_path,  # 设置字体
                 background_color=bg_color,  # 背景颜色
-                max_words=75,  # 词云显示的最大词数
+                max_words=wordnum,  # 词云显示的最大词数
                 mask=back_coloring,  # 设置背景图片
                 max_font_size=200,  # 字体最大值
                 min_font_size=4,
                 random_state=42,
                 width=1000, height=860, margin=2,# 设置图片默认的大小,但是如果使用背景图片的话,那么保存的图片大小将会按照其大小保存,margin为词语边缘距离
                 collocations=False,
+                prefer_horizontal = rotate,
                 )
 
     # 生成词云, 可以用generate输入全部文本(wordcloud对中文分词支持不好,建议启用中文分词),也可以我们计算好词频后使用generate_from_frequencies函数

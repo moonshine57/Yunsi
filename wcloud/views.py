@@ -9,7 +9,7 @@ from wcloud.util.generate_wordcloud import generate_wordcloud
 from wordcloud import WordCloud
 
 back_coloring_path_prefix = "wcloud\\res\\shape\\" # 设置背景图片路径
-font_path = 'wcloud\\res\\simkai.ttf' # 为matplotlib设置中文字体路径没
+font_path_prefix = 'wcloud\\res\\' # 为matplotlib设置中文字体路径没
 stopwords_path = 'wcloud\\res\\hit_stopwords.txt' # 停用词词表
 
 def index(request):
@@ -23,7 +23,8 @@ def result(request):
     wordcloud.to_file('./wcloud/images/'+filename)
     '''
     imgname = uuid.uuid4().hex+'.png'
-    back_coloring_path = back_coloring_path_prefix + '16.png'
+    back_coloring_path = back_coloring_path_prefix + '1.png'
+    font_path = font_path_prefix + 'simkai.ttf'
     word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False)
     template = loader.get_template('wcloud/result.html')
     return HttpResponse(template.render({"imgname":imgname,"word_frequency":word_frequency}, request))
@@ -41,8 +42,10 @@ def regenerate(request):
     shape_name = request.POST.get('shapeName')
     word_color = request.POST.get('wordColor')
     bg_color = request.POST.get('bgColor')
-    print(word_color)
-    print(bg_color)
+    rotate = float(request.POST.get('rotate'))
+    wordnum = int(request.POST.get('wordnum'))
+    font = request.POST.get('font')
+    font_path = font_path_prefix + font
     back_coloring_path = back_coloring_path_prefix+shape_name
     word_frequency = request.POST.get('word_frequency')
     word_frequency = json.loads(word_frequency)
@@ -52,7 +55,7 @@ def regenerate(request):
         item = item.split(',')[:2]
         d[item[0]] = int(item[1])
     imgname = uuid.uuid4().hex+'.png'
-    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False,word_color=word_color,bg_color=bg_color)
+    generate_wordcloud(d,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False,word_color=word_color,bg_color=bg_color,rotate=rotate,wordnum=wordnum)
 
     return JsonResponse({"imgname": imgname})
 
