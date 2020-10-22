@@ -3,10 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>云思</title>
+    <title>酷词云</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'logo.ico' %}" type="image/x-icon"/>
     <style>
         body {
-            background-color: #d9e9ca;
+            /*background-color: #d9e9ca;*/
+            margin:0px;
         }
 
         h1 {
@@ -17,7 +20,7 @@
             font-size: 16px;
             resize: none;
             /*除去缩放样式*/
-            border: 5px rgb(159, 221, 159) solid;
+            border: 5px rgb(232, 232, 232) solid;
         }
 
         textarea:focus {
@@ -35,16 +38,37 @@
             outline-color: rgb(159, 221, 159);
         }
 
+        .box{
+            background-color:rgb(232, 232, 232);
+            width: 100%; 
+            height: 100%; 
+            /* 设置元素两端对齐 */ 
+            text-align: center; 
+        }
+
+
+
+
     </style>
 </head>
 
 <body>
-    <h1>云思——在线词云生成工具
-        <h1>
+    {% load static %}
+
+    <div class='box' >
+                <div style="display:inline-block;vertical-align:middle;">
+                    <img draggable="false" src="{% static 'logo3.png' %}" alt="图片" width="190" height="140">
+                </div>
+                <div style="font-size: 40px;display:inline-block;vertical-align:middle;">在线词云生成工具</div>
+    </div>
+    
+    <div style="text-align:center;margin-top:10px">
+            <div style="width:870px;margin: auto;text-align: left;font-family: 'Microsoft YaHei';font-weight: bold">输入长文本或者现成的词。若输入的是长文本，网站会自动对文本进行切词和停用词过滤。若输入现成的词，可以用空格、逗号或换行符等符号分隔词语。点击生成词云后可修改词频和词云样式。</div>
+            <div style="width:100%;margin: auto;margin-top: 10px">
             <form action="result/" method="post">
                 <!-- Django post方法传递数据需要令牌，否则报错  -->
                 {% csrf_token %}
-                <textarea name="content" id="" cols="150" rows="20">
+                <textarea name="content" style="width:850px;height:400px;">
     盼望着，盼望着，东风来了，春天的脚步近了。
     一切都像刚睡醒的样子，欣欣然张开了眼。山朗润起来了，水涨起来了，太阳的脸红起来了。
     小草偷偷地从土里钻出来，嫩嫩的，绿绿的。园子里，田野里，瞧去，一大片一大片满是的。坐着，躺着，打两个滚，踢几脚球，赛几趟跑，捉几回迷藏。风轻悄悄的，草软绵绵的。
@@ -56,10 +80,16 @@
     春天像小姑娘，花枝招展的，笑着，走着。
     春天像健壮的青年，有铁一般的胳膊和腰脚，他领着我们上前去
                 </textarea>
-                <div class='cls1'>
-                    <button type="submit">生成词云</button>
+                <div style="margin-top: 15px">
+                <button type="submit">生成词云</button>
                 </div>
             </form>
+            </div>
+        </div>
+<footer style="background-color:rgb(59, 59, 59);text-align: center;vertical-align: middle;;margin-top: 50px;height:140px">
+<div style="color: white"><br>© 2020 酷词云 粤ICP备20009619号-1</div>
+</footer>
+
 </body>
 
 </html>
