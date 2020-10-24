@@ -4,17 +4,38 @@
 <head>
     <meta charset="utf-8">
     <title>酷词云</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'logo.ico' %}" type="image/x-icon"/>
     <style>
         body {
-            background-color: #d9e9ca;
             text-align: center;
+            margin:0px;
         }
 
 	.mylist li {
-		width: 280px;   /*如果显示三列 则width改为70px*/
+		width: 150px;  
 		float: left;
         display: block;
     }
+
+    .box{
+    background-color:rgb(232, 232, 232);
+    width: 100%; 
+    height: 100%; 
+    /* 设置元素两端对齐 */ 
+    text-align: center; 
+    }
+
+            button {
+            background-color: #58aec4;
+            width: 76px;
+            height: 36px;
+            color: #FFFFFF;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            outline-color: rgb(159, 221, 159);
+        }
 
         
     </style>
@@ -26,19 +47,24 @@
 </head>
 <body>
     {% load static %}
-    <div>
-    <img style="display:inline-block;vertical-align:top;" id='img' src="{% static imgname %}" alt="图片" width="600" height="600">
-    <div style="display:inline-block;vertical-align:top;">
-    <div style="height:600px;width:450px;overflow:auto;background:#EEEEEE;margin: auto;">
-        <table id='Tbl'>
+    <div class='box' >
+        <div style="display:inline-block;vertical-align:middle;">
+            <img draggable="false" src="{% static 'logo3.png' %}" alt="图片" width="190" height="140">
+        </div>
+        <div style="font-size: 40px;display:inline-block;vertical-align:middle;">在线词云生成工具</div>
+</div >
+    <div style="margin-top: 20px">
+    <img  draggable="false" style=" display:inline-block;vertical-align:top;border: 5px rgb(232, 232, 232) solid;" id='img' src="{% static imgname %}" alt="图片" width="560" height="560">
+    <div style="display:inline-block;vertical-align:top;margin-left: 10px;border: 5px rgb(232, 232, 232) solid; text-align: center; height:560px;width:420px;overflow:auto;background:#EEEEEE;">
+        <table id='Tbl' style="margin:auto">
             <tr>
                 <th>词语</th>
                 <th>出现频次</th>
             </tr>
             {% for wf in word_frequency %}
             <tr>
-                <td><input value='{{wf.0}}' /></td>
-                <td><input value='{{wf.1}}' /></td>
+                <td><input style="text-align:center;" value='{{wf.0}}' /></td>
+                <td><input  style="text-align:center;" value='{{wf.1}}' /></td>
                 <td>
                     <input type="button" value="删除" onClick="removeRow(this)" />
                 </td>
@@ -46,52 +72,56 @@
             {% endfor %}
         </table>
         </div>
-
     </div>
-    </div>
-    <div style="margin-top:10px">
+    <div style="margin-top:20px">
     <button id='downloadPic' onclick="javascript:window.location.href='download/?imgname={{imgname}}'">下载图片</button>
-    <button id='downloadCsv'>下载词表</button>
-    <button onclick="addRow()">新增词语</button>
-    <button id="send-word-frequency-to-views">重绘</button>
+    <button id='downloadCsv' style="margin-left:15px">下载词表</button>
+    <button onclick="addRow() " style="margin-left:15px" >新增词语</button>
+    <button id="send-word-frequency-to-views" style="margin-left:15px">重绘</button>
     </div>
-    <div>
-    <div style="height:600px;width:600px;overflow:auto;margin:auto;display:inline-block;vertical-align:top">
-	<div class="picker">
-		<select class='image-picker' id='sel'>
-			<option data-img-src="{% static '1s.png' %}" value='1.png'>  Page 1  </option>
-            <option data-img-src="{% static '2s.png' %}" value='2.png'>  Page 2  </option>
-            <option data-img-src="{% static '3s.jpg' %}" value='3.png'>  Page 3  </option>
-            <option data-img-src="{% static '4s.jpg' %}" value='4.png'>  Page 4  </option>
-            <option data-img-src="{% static '5s.jpg' %}" value='5.png'>  Page 5  </option>
-            <option data-img-src="{% static '6s.jpg' %}" value='6.png'>  Page 6  </option>
-            <option data-img-src="{% static '7s.jpg' %}" value='7.png'>  Page 7  </option>
-            <option data-img-src="{% static '8s.jpg' %}" value='8.png'>  Page 8  </option>
-            <option data-img-src="{% static '9s.jpg' %}" value='9.png'>  Page 9  </option>
-            <option data-img-src="{% static '10s.png' %}" value='10.png'>  Page 10  </option>
-            <option data-img-src="{% static '11s.jpg' %}" value='11.png'>  Page 11  </option>
-            <option data-img-src="{% static '12s.jpg' %}" value='12.png'>  Page 12  </option>
-            <option data-img-src="{% static '13s.png' %}" value='13.png'>  Page 10  </option>
-            <option data-img-src="{% static '14s.png' %}" value='14.png'>  Page 11  </option>
-            <option data-img-src="{% static '15s.png' %}" value='15.png'>  Page 12  </option>
-            <option data-img-src="{% static '16s.jpg' %}" value='16.png'>  Page 10  </option>
-            <option data-img-src="{% static '17s.png' %}" value='17.png'>  Page 11  </option>
-            <option data-img-src="{% static '18s.png' %}" value='18.png'>  Page 12  </option>
-            <option data-img-src="{% static '19s.jpg' %}" value='19.png'>  Page 10  </option>
-            <option data-img-src="{% static '20s.jpg' %}" value='20.png'>  Page 11  </option>
-            <option data-img-src="{% static '21s.jpg' %}" value='21.png'>  Page 12  </option>
-            <option data-img-src="{% static '22s.png' %}" value='22.png'>  Page 10  </option>
-            <option data-img-src="{% static '23s.jpg' %}" value='23.png'>  Page 11  </option>
-			<option data-img-src="{% static '24s.png' %}" value='24.png'>  Page 12  </option>
+    <div style="margin-top:20px">
+    <div style="text-align: center; background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:630px;overflow:auto;display:inline-block;vertical-align:top">
+	<div class="picker" style="text-align: center" >
+        <p style="font-family: 'Microsoft YaHei';font-weight: bold">选择词云形状</p>
+		<select style="visibility: hidden;text-align: center" class='image-picker' id='sel'>
+			<option data-img-src="{% static '1s.png' %}" value='1.png'>  1  </option>
+            <option data-img-src="{% static '2s.png' %}" value='2.png'>  2  </option>
+            <option data-img-src="{% static '3s.jpg' %}" value='3.png'>  3  </option>
+            <option data-img-src="{% static '4s.jpg' %}" value='4.png'>  4  </option>
+            <option data-img-src="{% static '5s.jpg' %}" value='5.png'>  5  </option>
+            <option data-img-src="{% static '6s.jpg' %}" value='6.png'>  6  </option>
+            <option data-img-src="{% static '7s.jpg' %}" value='7.png'>  7  </option>
+            <option data-img-src="{% static '8s.jpg' %}" value='8.png'>  8  </option>
+            <option data-img-src="{% static '9s.jpg' %}" value='9.png'>  9  </option>
+            <option data-img-src="{% static '10s.png' %}" value='10.png'> 10  </option>
+            <option data-img-src="{% static '11s.jpg' %}" value='11.png'> 11  </option>
+            <option data-img-src="{% static '12s.jpg' %}" value='12.png'> 12  </option>
+            <option data-img-src="{% static '13s.png' %}" value='13.png'> 13  </option>
+            <option data-img-src="{% static '14s.png' %}" value='14.png'> 14  </option>
+            <option data-img-src="{% static '15s.png' %}" value='15.png'> 15  </option>
+            <option data-img-src="{% static '16s.jpg' %}" value='16.png'> 16  </option>
+            <option data-img-src="{% static '17s.png' %}" value='17.png'> 17  </option>
+            <option data-img-src="{% static '18s.png' %}" value='18.png'> 18  </option>
+            <option data-img-src="{% static '19s.jpg' %}" value='19.png'> 19  </option>
+            <option data-img-src="{% static '20s.jpg' %}" value='20.png'> 20  </option>
+            <option data-img-src="{% static '21s.jpg' %}" value='21.png'> 21  </option>
+            <option data-img-src="{% static '22s.png' %}" value='22.png'> 22  </option>
+            <option data-img-src="{% static '23s.jpg' %}" value='23.png'> 23  </option>
+			<option data-img-src="{% static '24s.png' %}" value='24.png'> 24  </option>
 		</select>
     </div>
     </div>
-    <div class="mylist" style="height:600px;width:600px;overflow:auto;margin:auto;display:inline-block;vertical-align:top">
-    <ul>
+    <div class="mylist" style="margin-left: 10px;background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:350px;overflow:auto;display:inline-block;vertical-align:top">
+        <p style="font-family: 'Microsoft YaHei';font-weight: bold">设置词云参数</p>
+    <ul >
        <li><label>文字颜色</label></li>
+       
         <li><input id='wordcolor' type="color" value="#00bfff"/></li>
+        <li style="visibility: hidden">xxx</li><li style="visibility: hidden">xxx</li>
        <li><label >背景颜色</label></li>
        <li><input id='bgcolor' type="color" value="#FFFFFF"/></li>
+       <li style="visibility: hidden">xxx</li><li style="visibility: hidden">xxx</li>
+    
        <li><label >文字字体</label></li>
        <li>
             <select id='font'>
@@ -104,6 +134,7 @@
                  <option value='simhei.ttf'>黑体</option>
             </select>
         </li>
+        <li style="visibility: hidden">xxx</li><li style="visibility: hidden">xxx</li>
        <li><label >文字旋转</label></li>
        <li>
            <select id='rotate'>
@@ -111,6 +142,7 @@
                 <option value='1'>不旋转</option>
            </select>
        </li>
+       <li style="visibility: hidden">xxx</li><li style="visibility: hidden">xxx</li>
        <li><label >输出词数</label></li>
        <li>
             <select id='wordnum'>
@@ -124,7 +156,9 @@
     </ul>
     </div>
 </div>
-
+<footer style="background-color:rgb(59, 59, 59);text-align: center;vertical-align: middle;;margin-top: 50px;height:140px">
+        <div style="color: white"><br>© 2020 酷词云 粤ICP备20009619号-1</div>
+        </footer>
     <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'jquery.masonry.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'image-picker.min.js' %}"></script>
@@ -298,6 +332,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>
