@@ -63,7 +63,7 @@
     </div>
     
     <div style="text-align:center;margin-top:10px">
-            <div style="width:870px;margin: auto;text-align: left;font-family: 'Microsoft YaHei';font-weight: bold">输入长文本或者现成的词。若输入的是长文本，网站会自动对文本进行切词和停用词过滤。若输入现成的词，可以用空格、逗号或换行符等符号分隔词语。点击生成词云后可修改词频和词云样式。</div>
+            <div style="width:870px;margin: auto;text-align: left;font-family: 'Microsoft YaHei';font-weight: bold">输入长文本或者现成的词，支持中英文。若输入的是长文本，本工具会自动对文本进行切词和停用词过滤。若输入现成的词，可以用空格、逗号或换行符等符号分隔词语。点击生成词云后可修改词频和词云样式。</div>
             <div style="width:100%;margin: auto;margin-top: 10px">
             <form action="result/" method="post" onsubmit="submitonce()">
                 <!-- Django post方法传递数据需要令牌，否则报错  -->
@@ -93,6 +93,7 @@
                     btn.innerHTML= "生成中...";
                     }
             </script>
+            <script type="text/javascript">{{script}}('{{wrong}}')</script>
             </div>
         </div>
 <footer style="background-color:rgb(59, 59, 59);text-align: center;vertical-align: middle;;margin-top: 50px;height:140px">

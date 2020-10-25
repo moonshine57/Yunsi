@@ -25,7 +25,11 @@ def result(request):
     imgname = uuid.uuid4().hex+'.png'
     back_coloring_path = back_coloring_path_prefix + '1.png'
     font_path = font_path_prefix + 'simkai.ttf'
-    word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False)
+    try:
+        word_frequency = generate_wordcloud(text,imgname,back_coloring_path,font_path,stopwords_path,color_by_backimg=False)
+    except ValueError:
+        template = loader.get_template('wcloud/index.html')
+        return HttpResponse(template.render({'script':"alert",'wrong':'输入内容无效'}))
     template = loader.get_template('wcloud/result.html')
     return HttpResponse(template.render({"imgname":imgname,"word_frequency":word_frequency}, request))
 

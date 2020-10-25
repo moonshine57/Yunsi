@@ -126,9 +126,9 @@
        <li>
             <select id='font'>
                  <option value='weiruanyahei.ttf'>微软雅黑</option>
-                 <option value='huawensongti.ttf' selected>宋体</option>
+                 <option value='huawensongti.ttf' >宋体</option>
                  <option value='fangsong.ttf'>仿宋</option>
-                 <option value='simkai.ttf'>楷体</option>
+                 <option value='simkai.ttf' selected>楷体</option>
                  <option value='youyuan.ttf'>幼圆</option>
                  <option value='lishu.ttf'>隶书</option>
                  <option value='simhei.ttf'>黑体</option>
@@ -269,6 +269,10 @@
 
         $(document).ready(function () {
             $("#send-word-frequency-to-views").click(function () {
+                var btn = document.getElementById('send-word-frequency-to-views');
+                btn.disabled=true;
+                btn.style.cursor = "default";
+                btn.innerHTML= "重绘中...";
                 var csv = [];
                 var rows = document.querySelectorAll("table tr");
 
@@ -324,11 +328,19 @@
                         var onclick = "javascript:window.location.href='download/?imgname=placeholder'";
                         onclick = onclick.replace('placeholder',new_imgname);
                         downloadPicButton.setAttribute("onclick",onclick);
+
+                        btn.disabled=false;
+                        btn.style.cursor = "pointer";
+                        btn.innerHTML= "重绘";
+
                     },
                     error: function (xhr, errmsg, err) {
                         alert("Could not send URL to Django. Error: " + xhr.status + ": " + xhr.responseText);
                     }
+
                 });
+                
+
             });
         });
     </script>
