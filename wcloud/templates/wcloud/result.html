@@ -54,8 +54,8 @@
         <div style="font-size: 40px;display:inline-block;vertical-align:middle;">在线词云生成工具</div>
 </div >
     <div style="margin-top: 20px">
-    <img  draggable="false" style=" display:inline-block;vertical-align:top;border: 5px rgb(232, 232, 232) solid;" id='img' src="{% static imgname %}" alt="图片" width="560" height="560">
-    <div style="display:inline-block;vertical-align:top;margin-left: 10px;border: 5px rgb(232, 232, 232) solid; text-align: center; height:560px;width:420px;overflow:auto;background:#EEEEEE;">
+    <img  draggable="false" style=" display:inline-block;vertical-align:top;border: 5px rgb(232, 232, 232) solid;border-radius:12px;" id='img' src="{% static imgname %}" alt="图片" width="560" height="560">
+    <div style="border-radius:12px;display:inline-block;vertical-align:top;margin-left: 10px;border: 5px rgb(232, 232, 232) solid; text-align: center; height:560px;width:420px;overflow:auto;background:#EEEEEE;">
         <table id='Tbl' style="margin:auto">
             <tr>
                 <th>词语</th>
@@ -64,7 +64,7 @@
             {% for wf in word_frequency %}
             <tr>
                 <td><input style="text-align:center;" value='{{wf.0}}' /></td>
-                <td><input  style="text-align:center;" value='{{wf.1}}' /></td>
+                <td><input style="text-align:center;" value='{{wf.1}}' oninput="if(value>10000)value=10000;" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" /></td>
                 <td>
                     <input type="button" value="删除" onClick="removeRow(this)" />
                 </td>
@@ -80,8 +80,8 @@
     <button id="send-word-frequency-to-views" style="margin-left:15px">重绘</button>
     </div>
     <div style="margin-top:20px">
-    <div style="text-align: center; background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:630px;overflow:auto;display:inline-block;vertical-align:top">
-	<div class="picker" style="text-align: center" >
+    <div style="border-radius:12px;text-align: center; background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:630px;overflow:auto;display:inline-block;vertical-align:top">
+	<div class="picker" style="text-align: center;" >
         <p style="font-family: 'Microsoft YaHei';font-weight: bold">选择词云形状</p>
 		<select style="visibility: hidden;text-align: center" class='image-picker' id='sel'>
 			<option data-img-src="{% static '1s.png' %}" value='1.png'>  1  </option>
@@ -111,7 +111,7 @@
 		</select>
     </div>
     </div>
-    <div class="mylist" style="margin-left: 10px;background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:350px;overflow:auto;display:inline-block;vertical-align:top">
+    <div class="mylist" style="border-radius:12px;margin-left: 10px;background:#EEEEEE;border: 5px rgb(232, 232, 232) solid;height:500px;width:350px;overflow:auto;display:inline-block;vertical-align:top">
         <p style="font-family: 'Microsoft YaHei';font-weight: bold">设置词云参数</p>
     <ul >
        <li><label>文字颜色</label></li>
@@ -212,8 +212,8 @@
             var newTd2 = newTr.insertCell();
 
             //设置列内容和属性
-            newTd0.innerHTML = "<td><input value='' /></td>";
-            newTd1.innerHTML = "<td><input value='' /></td>";
+            newTd0.innerHTML = "<td><input style='text-align:center;' value='' /></td>";
+            newTd1.innerHTML = '<td><input style="text-align:center;"  oninput="if(value>10000)value=10000;" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\D/g,\'\')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,\'\')}else{this.value=this.value.replace(/\D/g,\'\')}"  value="" /></td>';
             newTd2.innerHTML = '<input type="button" value="删除" onClick="removeRow(this)" />';
         }
 
@@ -278,11 +278,16 @@
 
                 for (var i = 0; i < rows.length; i++) {
                     var row = [], cols = rows[i].querySelectorAll("td, th");
-
-                    for (var j = 0; j < 2; j++)
-                        row.push(cols[j].childNodes[0].value);
-
+                    
+                    var empty = false;
+                    for (var j = 0; j < 2; j++){
+                        var value = cols[j].childNodes[0].value;
+                        if(value=='')empty=true; 
+                        row.push(value);
+                    }
+                    if(empty==false)
                     csv.push(row.join(","));
+                    else empty = false;
                 }
                 var myselect = document.getElementById('sel');
                 var index=myselect.selectedIndex ;  
